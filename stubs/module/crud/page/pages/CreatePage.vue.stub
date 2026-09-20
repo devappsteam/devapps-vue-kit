@@ -1,0 +1,27 @@
+<script setup lang="ts">
+import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { Form } from '@devappsnpm/vue-kit'
+import { use{{ ModuleName }}Store } from '../stores/{{ moduleSlug }}.store'
+import {{ ModuleName }}Form from '../components/{{ ModuleName }}Form.vue'
+import type { {{ ModuleName }}Form as {{ ModuleName }}FormData } from '../types/{{ moduleSlug }}.types'
+
+const router = useRouter()
+const store = use{{ ModuleName }}Store()
+
+async function handleSubmit(data: {{ ModuleName }}FormData) {
+  await store.create(data)
+  router.push({ name: '{{ moduleSlugPlural }}.index' })
+}
+</script>
+
+<template>
+  <div class="{{ moduleSlug }}-create-page">
+    <h1 class="text-xl font-semibold mb-4">New {{ ModuleName }}</h1>
+    <{{ ModuleName }}Form
+      :loading="store.saving"
+      @submit="handleSubmit"
+      @cancel="router.push({ name: '{{ moduleSlugPlural }}.index' })"
+    />
+  </div>
+</template>

@@ -1,0 +1,11 @@
+import type { RouteRecordRaw } from 'vue-router'
+
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/{{ moduleSlugPlural }}-dashboard',
+    name: '{{ moduleSlugPlural }}.dashboard',
+    component: () => import('./views/{{ ModuleName }}Dashboard.vue'),
+  },
+]
+
+export default routes

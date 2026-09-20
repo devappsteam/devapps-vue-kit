@@ -1,0 +1,62 @@
+<script setup lang="ts">
+import { reactive, watch } from 'vue'
+import { Form } from '@devappsnpm/vue-kit'
+import type { {{ ModuleName }}, {{ ModuleName }}Form } from '../types/{{ moduleSlug }}.types'
+
+const props = defineProps<{
+  item?: {{ ModuleName }} | null
+  loading?: boolean
+}>()
+
+const emit = defineEmits<{
+  submit: [data: {{ ModuleName }}Form]
+  cancel: []
+}>()
+
+const form = reactive(
+  new Form<{{ ModuleName }}Form>({
+    // TODO: initialise form fields
+  }),
+)
+
+watch(
+  () => props.item,
+  (item) => {
+    if (item) {
+      // TODO: populate form from item
+      // Object.assign(form.data, { field: item.field })
+    } else {
+      form.reset()
+    }
+  },
+  { immediate: true },
+)
+
+function handleSubmit() {
+  emit('submit', form.data)
+}
+</script>
+
+<template>
+  <form class="{{ moduleSlug }}-form space-y-4" @submit.prevent="handleSubmit">
+    <!-- TODO: add form fields -->
+
+    <div class="flex justify-end gap-2">
+      <button
+        type="button"
+        class="px-4 py-2 rounded border text-sm"
+        :disabled="loading"
+        @click="emit('cancel')"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        class="px-4 py-2 rounded bg-blue-600 text-white text-sm disabled:opacity-50"
+        :disabled="loading"
+      >
+        {{ loading ? 'Saving...' : 'Save' }}
+      </button>
+    </div>
+  </form>
+</template>

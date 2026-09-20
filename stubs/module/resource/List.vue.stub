@@ -1,0 +1,19 @@
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { use{{ ModuleName }}Store } from '../stores/{{ moduleSlug }}.store'
+
+const store = use{{ ModuleName }}Store()
+
+onMounted(() => store.fetchAll())
+</script>
+
+<template>
+  <div class="{{ moduleSlug }}-list">
+    <div v-if="store.loading">Loading...</div>
+    <ul v-else>
+      <li v-for="item in store.items" :key="item.uuid">
+        {{ item }}
+      </li>
+    </ul>
+  </div>
+</template>

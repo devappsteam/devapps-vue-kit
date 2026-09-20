@@ -1,0 +1,13 @@
+import { BaseService } from '@devappsnpm/vue-kit'
+import type { HttpClient } from '@devappsnpm/vue-kit'
+
+export class {{ ModuleName }}Service extends BaseService {
+  constructor(http: HttpClient) {
+    super(http)
+  }
+
+  // async customAction() {
+  //   const response = await this.get('/custom-endpoint')
+  //   return response.data
+  // }
+}

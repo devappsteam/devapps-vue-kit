@@ -1,0 +1,9 @@
+<script setup lang="ts">
+// {{ ModuleName }} basic component
+</script>
+
+<template>
+  <div class="{{ moduleSlug }}-component">
+    <slot />
+  </div>
+</template>

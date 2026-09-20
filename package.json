@@ -1,0 +1,57 @@
+{
+  "name": "@devappsnpm/vue-kit",
+  "version": "1.0.9",
+  "description": "Vue 3 toolkit for Laravel API applications",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./ui": {
+      "types": "./dist/ui.d.ts",
+      "import": "./dist/ui.js",
+      "require": "./dist/ui.cjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-devapps:devappsteam/devapps-vue-kit.git"
+  },
+  "files": [
+    "dist",
+    "stubs",
+    "bin"
+  ],
+  "bin": {
+    "devapps-vue": "./bin/devapps-vue.js"
+  },
+  "scripts": {
+    "build": "tsup && vue-tsc -p tsconfig.build.json",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "peerDependencies": {
+    "pinia": "^3.0.0",
+    "vue": "^3.5.0"
+  },
+  "dependencies": {
+    "axios": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "esbuild-plugin-vue3": "^0.5.1",
+    "happy-dom": "^20.14.5",
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^3.0.0",
+    "vue-tsc": "^3.3.11"
+  }
+}
