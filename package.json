@@ -1,5 +1,5 @@
 {
-  "name": "@devapps/vue-kit",
+  "name": "@devappsnpm/vue-kit",
   "version": "0.1.0",
   "description": "Vue 3 toolkit for Laravel API applications",
   "type": "module",

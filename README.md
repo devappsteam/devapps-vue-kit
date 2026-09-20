@@ -1,9 +1,9 @@
-# @devapps/vue-kit
+# @devappsnpm/vue-kit
 
 Um toolkit Vue 3 + TypeScript que fornece uma base arquitetural robusta para aplicações frontend que consomem APIs Laravel.
 
 ## 1. Introdução
-O pacote `@devapps/vue-kit` providencia infraestrutura padronizada para:
+O pacote `@devappsnpm/vue-kit` providencia infraestrutura padronizada para:
 - Cliente HTTP (wrapper sobre o Axios)
 - Autenticação (JWT e Sanctum/Cookie)
 - Services Base e Stores do Pinia
@@ -14,14 +14,14 @@ O pacote `@devapps/vue-kit` providencia infraestrutura padronizada para:
 
 ## 2. Instalação
 ```bash
-npm install @devapps/vue-kit
+npm install @devappsnpm/vue-kit
 npm install -D typescript vue pinia
 ```
 
 ## 3. Configuração
 Configure a instância do `VueKit`, tipicamente no seu `src/main.ts` ou num arquivo dedicado de configuração:
 ```ts
-import { createVueKit } from '@devapps/vue-kit'
+import { createVueKit } from '@devappsnpm/vue-kit'
 
 export const vueKit = createVueKit({
   api: {
@@ -41,7 +41,7 @@ Estenda a classe `BaseService` ou utilize `CrudService` para interagir com a sua
 
 Utilize o `defineCrudStore` para criar rapidamente stores do Pinia completas com todas as funcionalidades de CRUD:
 ```ts
-import { defineCrudStore, CrudService } from '@devapps/vue-kit'
+import { defineCrudStore, CrudService } from '@devappsnpm/vue-kit'
 
 class CustomerService extends CrudService<Customer> {
   constructor() { super(vueKit.http, '/customers') }
@@ -53,7 +53,7 @@ export const useCustomerStore = defineCrudStore('customer', () => new CustomerSe
 ## 6. Formulários (Forms)
 A classe `Form<T>` gerencia reativamente o estado, submissão e os erros de validação, integrando-se de maneira transparente aos formatos de resposta padrão do Laravel.
 ```ts
-import { Form } from '@devapps/vue-kit'
+import { Form } from '@devappsnpm/vue-kit'
 
 const form = reactive(new Form({ name: '' }))
 await form.submit(async (data) => service.store(data))
@@ -76,7 +76,7 @@ Comandos disponíveis:
 ## 8. Componentes de UI
 Nós fornecemos um entrypoint separado contendo utilitários de UI baseados em Tailwind CSS:
 ```ts
-import { BaseModal, ConfirmDeleteModal, ToastContainer, useToast } from '@devapps/vue-kit/ui'
+import { BaseModal, ConfirmDeleteModal, ToastContainer, useToast } from '@devappsnpm/vue-kit/ui'
 ```
 
 Adicione o `ToastContainer` no layout principal da sua aplicação (App.vue) e utilize o composable `useToast` em qualquer lugar para exibir notificações na tela.
