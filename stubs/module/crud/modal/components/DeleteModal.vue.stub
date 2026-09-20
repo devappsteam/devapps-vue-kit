@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ConfirmDeleteModal } from '@devapps/vue-kit/ui'
+import { ConfirmDeleteModal } from '@devappsnpm/vue-kit/ui'
 import { use{{ ModuleName }}Store } from '../stores/{{ moduleSlug }}.store'
 import type { {{ ModuleName }} } from '../types/{{ moduleSlug }}.types'
 

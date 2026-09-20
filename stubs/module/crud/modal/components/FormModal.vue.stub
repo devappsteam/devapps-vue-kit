@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue'
-import { BaseModal } from '@devapps/vue-kit/ui'
-import { Form } from '@devapps/vue-kit'
+import { BaseModal } from '@devappsnpm/vue-kit/ui'
+import { Form } from '@devappsnpm/vue-kit'
 import { use{{ ModuleName }}Store } from '../stores/{{ moduleSlug }}.store'
 import type { {{ ModuleName }}, {{ ModuleName }}Form } from '../types/{{ moduleSlug }}.types'
 

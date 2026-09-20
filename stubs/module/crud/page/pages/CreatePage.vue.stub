@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { Form } from '@devapps/vue-kit'
+import { Form } from '@devappsnpm/vue-kit'
 import { use{{ ModuleName }}Store } from '../stores/{{ moduleSlug }}.store'
 import {{ ModuleName }}Form from '../components/{{ ModuleName }}Form.vue'
 import type { {{ ModuleName }}Form as {{ ModuleName }}FormData } from '../types/{{ moduleSlug }}.types'
