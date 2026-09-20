@@ -1,6 +1,8 @@
 export { createVueKit } from "./config/createVueKit";
 export type { VueKit } from "./config/createVueKit";
 export type { VueKitConfig } from "./config/VueKitConfig";
+export { useHttpClient } from "./config/useHttpClient";
+
 
 export { HttpClient } from "./core/http/HttpClient";
 export type { HttpClientConfig } from "./core/http/HttpClientConfig";

@@ -1,6 +1,7 @@
 import { HttpClient } from "../core/http/HttpClient";
 import type { HttpClientConfig } from "../core/http/HttpClientConfig";
 import type { VueKitConfig } from "./VueKitConfig";
+import { _setHttpClientInstance } from "./useHttpClient";
 
 export interface VueKit {
   http: HttpClient;
@@ -15,6 +16,9 @@ export function createVueKit(config: VueKitConfig): VueKit {
   if (config.api.handlers !== undefined) httpConfig.handlers = config.api.handlers;
 
   const http = new HttpClient(httpConfig);
+
+  // Store globally so useHttpClient() works in stores/services
+  _setHttpClientInstance(http);
 
   return { http, config };
 }
