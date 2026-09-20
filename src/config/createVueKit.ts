@@ -6,6 +6,7 @@ import { _setHttpClientInstance } from "./useHttpClient";
 export interface VueKit {
   http: HttpClient;
   config: VueKitConfig;
+  install: (app: any) => void;
 }
 
 export function createVueKit(config: VueKitConfig): VueKit {
@@ -20,5 +21,12 @@ export function createVueKit(config: VueKitConfig): VueKit {
   // Store globally so useHttpClient() works in stores/services
   _setHttpClientInstance(http);
 
-  return { http, config };
+  return {
+    http,
+    config,
+    install(app) {
+      // Allows app.use(vueKit) without Vue warnings
+      app.provide('vueKit', { http, config });
+    },
+  };
 }

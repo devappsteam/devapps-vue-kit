@@ -1,6 +1,6 @@
 {
   "name": "@devappsnpm/vue-kit",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Vue 3 toolkit for Laravel API applications",
   "type": "module",
   "main": "./dist/index.cjs",
