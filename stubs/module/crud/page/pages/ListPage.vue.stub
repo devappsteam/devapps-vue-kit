@@ -1,0 +1,59 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { use{{ ModuleName }}Store } from '../stores/{{ moduleSlug }}.store'
+import {{ ModuleName }}List from '../components/{{ ModuleName }}List.vue'
+import {{ ModuleName }}DeleteModal from '../components/{{ ModuleName }}DeleteModal.vue'
+import type { {{ ModuleName }} } from '../types/{{ moduleSlug }}.types'
+
+const router = useRouter()
+const store = use{{ ModuleName }}Store()
+
+const isDeleteModalOpen = ref(false)
+const {{ moduleName }}ToDelete = ref<{{ ModuleName }} | null>(null)
+
+onMounted(() => store.fetchAll())
+
+function handleEdit(item: {{ ModuleName }}) {
+  router.push({ name: '{{ moduleSlugPlural }}.edit', params: { uuid: item.uuid } })
+}
+
+function handleDelete(item: {{ ModuleName }}) {
+  {{ moduleName }}ToDelete.value = item
+  isDeleteModalOpen.value = true
+}
+
+function handleDeleted() {
+  isDeleteModalOpen.value = false
+  {{ moduleName }}ToDelete.value = null
+  store.fetchAll()
+}
+</script>
+
+<template>
+  <div class="{{ moduleSlug }}-list-page">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-xl font-semibold">{{ ModuleNamePlural }}</h1>
+      <button
+        class="px-4 py-2 bg-blue-600 text-white rounded text-sm"
+        @click="router.push({ name: '{{ moduleSlugPlural }}.create' })"
+      >
+        New {{ ModuleName }}
+      </button>
+    </div>
+
+    <{{ ModuleName }}List
+      :items="store.items"
+      :loading="store.loading"
+      @edit="handleEdit"
+      @delete="handleDelete"
+    />
+
+    <{{ ModuleName }}DeleteModal
+      :open="isDeleteModalOpen"
+      :item="{{ moduleName }}ToDelete"
+      @close="isDeleteModalOpen = false"
+      @deleted="handleDeleted"
+    />
+  </div>
+</template>

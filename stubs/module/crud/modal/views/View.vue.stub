@@ -1,0 +1,83 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { use{{ ModuleName }}Store } from '../stores/{{ moduleSlug }}.store'
+import {{ ModuleName }}List from '../components/{{ ModuleName }}List.vue'
+import {{ ModuleName }}FormModal from '../components/{{ ModuleName }}FormModal.vue'
+import {{ ModuleName }}DeleteModal from '../components/{{ ModuleName }}DeleteModal.vue'
+import type { {{ ModuleName }} } from '../types/{{ moduleSlug }}.types'
+
+const store = use{{ ModuleName }}Store()
+
+const isFormModalOpen = ref(false)
+const isDeleteModalOpen = ref(false)
+const selected{{ ModuleName }} = ref<{{ ModuleName }} | null>(null)
+const {{ moduleName }}ToDelete = ref<{{ ModuleName }} | null>(null)
+
+onMounted(() => loadItems())
+
+async function loadItems(page = store.pagination?.currentPage ?? 1) {
+  await store.fetchAll({ page })
+}
+
+function handleCreate() {
+  selected{{ ModuleName }}.value = null
+  isFormModalOpen.value = true
+}
+
+async function handleEdit(item: {{ ModuleName }}) {
+  await store.fetchOne(item.uuid)
+  selected{{ ModuleName }}.value = store.item
+  isFormModalOpen.value = true
+}
+
+function handleDelete(item: {{ ModuleName }}) {
+  {{ moduleName }}ToDelete.value = item
+  isDeleteModalOpen.value = true
+}
+
+function handleFormSaved() {
+  isFormModalOpen.value = false
+  loadItems()
+}
+
+function handleDeleted() {
+  isDeleteModalOpen.value = false
+  {{ moduleName }}ToDelete.value = null
+  loadItems()
+}
+</script>
+
+<template>
+  <div class="{{ moduleSlug }}-view">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-xl font-semibold">{{ ModuleNamePlural }}</h1>
+      <button
+        class="px-4 py-2 bg-blue-600 text-white rounded text-sm"
+        @click="handleCreate"
+      >
+        New {{ ModuleName }}
+      </button>
+    </div>
+
+    <{{ ModuleName }}List
+      :items="store.items"
+      :loading="store.loading"
+      @edit="handleEdit"
+      @delete="handleDelete"
+    />
+
+    <{{ ModuleName }}FormModal
+      :open="isFormModalOpen"
+      :item="selected{{ ModuleName }}"
+      @close="isFormModalOpen = false"
+      @saved="handleFormSaved"
+    />
+
+    <{{ ModuleName }}DeleteModal
+      :open="isDeleteModalOpen"
+      :item="{{ moduleName }}ToDelete"
+      @close="isDeleteModalOpen = false"
+      @deleted="handleDeleted"
+    />
+  </div>
+</template>

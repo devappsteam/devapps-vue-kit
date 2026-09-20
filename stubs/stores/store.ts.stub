@@ -1,0 +1,19 @@
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+
+export const use{{ ModuleName }}Store = defineStore('{{ moduleName }}', () => {
+  // state
+  const data = ref<any>(null)
+  const loading = ref(false)
+
+  // actions
+  function setData(newData: any) {
+    data.value = newData
+  }
+
+  return {
+    data,
+    loading,
+    setData,
+  }
+})

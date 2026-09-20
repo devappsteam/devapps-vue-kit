@@ -1,0 +1,28 @@
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { use{{ ModuleName }}Store } from '../stores/{{ moduleSlug }}.store'
+
+const route = useRoute()
+const store = use{{ ModuleName }}Store()
+
+const uuid = route.params['uuid'] as string
+
+onMounted(() => store.fetchOne(uuid))
+</script>
+
+<template>
+  <div class="{{ moduleSlug }}-show-page">
+    <h1 class="text-xl font-semibold mb-4">{{ ModuleName }} Details</h1>
+    
+    <div v-if="store.loading" class="py-8 text-gray-500">Loading...</div>
+    
+    <div v-else-if="store.item" class="bg-white p-6 rounded shadow space-y-4">
+      <div>
+        <span class="text-sm text-gray-500">UUID</span>
+        <p class="font-mono">{{ store.item.uuid }}</p>
+      </div>
+      <!-- TODO: show fields -->
+    </div>
+  </div>
+</template>

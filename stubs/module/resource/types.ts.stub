@@ -1,0 +1,10 @@
+export interface {{ ModuleName }} {
+  uuid: string
+  // TODO: add fields
+  created_at: string
+  updated_at: string
+}
+
+export interface {{ ModuleName }}Form {
+  // TODO: add form fields
+}

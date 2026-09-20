@@ -1,0 +1,9 @@
+import { defineCrudStore } from '@devapps/vue-kit'
+import { {{ ModuleName }}Service } from '../services/{{ moduleSlug }}.service'
+import type { {{ ModuleName }} } from '../types/{{ moduleSlug }}.types'
+import { useHttpClient } from '@/composables/useHttpClient' // adjust to your project
+
+export const use{{ ModuleName }}Store = defineCrudStore<{{ ModuleName }}>(
+  '{{ moduleName }}',
+  () => new {{ ModuleName }}Service(useHttpClient()),
+)

@@ -1,0 +1,88 @@
+<script setup lang="ts">
+import { reactive, watch } from 'vue'
+import { BaseModal } from '@devapps/vue-kit/ui'
+import { Form } from '@devapps/vue-kit'
+import { use{{ ModuleName }}Store } from '../stores/{{ moduleSlug }}.store'
+import type { {{ ModuleName }}, {{ ModuleName }}Form } from '../types/{{ moduleSlug }}.types'
+
+const props = defineProps<{
+  open: boolean
+  item?: {{ ModuleName }} | null
+}>()
+
+const emit = defineEmits<{
+  close: []
+  saved: []
+}>()
+
+const store = use{{ ModuleName }}Store()
+
+const form = reactive(
+  new Form<{{ ModuleName }}Form>({
+    // TODO: initialise form fields
+  }),
+)
+
+watch(
+  () => props.item,
+  (item) => {
+    if (item) {
+      // TODO: populate form from item
+      // Object.assign(form.data, { field: item.field })
+    } else {
+      form.reset()
+    }
+  },
+  { immediate: true },
+)
+
+async function handleSubmit() {
+  await form.submit(async (data) => {
+    if (props.item) {
+      await store.update(props.item.uuid, data)
+    } else {
+      await store.create(data)
+    }
+    emit('saved')
+  })
+}
+</script>
+
+<template>
+  <BaseModal
+    :open="open"
+    :loading="form.processing"
+    @close="emit('close')"
+  >
+    <template #header>
+      <h2 class="text-lg font-semibold">
+        {{ item ? 'Edit' : 'Create' }} {{ ModuleName }}
+      </h2>
+    </template>
+
+    <form id="{{ moduleSlug }}-form" class="space-y-4" @submit.prevent="handleSubmit">
+      <!-- TODO: add form fields -->
+    </form>
+
+    <template #footer>
+      <div class="flex justify-end gap-2">
+        <button
+          type="button"
+          class="px-4 py-2 rounded border text-sm"
+          :disabled="form.processing"
+          @click="emit('close')"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          form="{{ moduleSlug }}-form"
+          class="px-4 py-2 rounded bg-blue-600 text-white text-sm disabled:opacity-50"
+          :disabled="form.processing"
+        >
+          {{ form.processing ? 'Saving...' : 'Save' }}
+        </button>
+      </div>
+    </template>
+  </BaseModal>
+</template>

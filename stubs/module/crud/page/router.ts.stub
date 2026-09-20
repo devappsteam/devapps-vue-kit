@@ -1,0 +1,26 @@
+import type { RouteRecordRaw } from 'vue-router'
+
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/{{ moduleSlugPlural }}',
+    name: '{{ moduleSlugPlural }}.index',
+    component: () => import('./pages/{{ ModuleName }}ListPage.vue'),
+  },
+  {
+    path: '/{{ moduleSlugPlural }}/create',
+    name: '{{ moduleSlugPlural }}.create',
+    component: () => import('./pages/{{ ModuleName }}CreatePage.vue'),
+  },
+  {
+    path: '/{{ moduleSlugPlural }}/:uuid/edit',
+    name: '{{ moduleSlugPlural }}.edit',
+    component: () => import('./pages/{{ ModuleName }}EditPage.vue'),
+  },
+  {
+    path: '/{{ moduleSlugPlural }}/:uuid',
+    name: '{{ moduleSlugPlural }}.show',
+    component: () => import('./pages/{{ ModuleName }}ShowPage.vue'),
+  },
+]
+
+export default routes

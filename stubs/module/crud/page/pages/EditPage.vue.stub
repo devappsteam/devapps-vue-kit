@@ -1,0 +1,34 @@
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { use{{ ModuleName }}Store } from '../stores/{{ moduleSlug }}.store'
+import {{ ModuleName }}Form from '../components/{{ ModuleName }}Form.vue'
+import type { {{ ModuleName }}Form as {{ ModuleName }}FormData } from '../types/{{ moduleSlug }}.types'
+
+const route = useRoute()
+const router = useRouter()
+const store = use{{ ModuleName }}Store()
+
+const uuid = route.params['uuid'] as string
+
+onMounted(() => store.fetchOne(uuid))
+
+async function handleSubmit(data: {{ ModuleName }}FormData) {
+  await store.update(uuid, data)
+  router.push({ name: '{{ moduleSlugPlural }}.index' })
+}
+</script>
+
+<template>
+  <div class="{{ moduleSlug }}-edit-page">
+    <h1 class="text-xl font-semibold mb-4">Edit {{ ModuleName }}</h1>
+    <div v-if="store.loading">Loading...</div>
+    <{{ ModuleName }}Form
+      v-else
+      :item="store.item"
+      :loading="store.saving"
+      @submit="handleSubmit"
+      @cancel="router.push({ name: '{{ moduleSlugPlural }}.index' })"
+    />
+  </div>
+</template>

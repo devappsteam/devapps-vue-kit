@@ -1,0 +1,3 @@
+export * from './types/{{ moduleSlug }}.types'
+export * from './services/{{ moduleSlug }}.service'
+export * from './stores/{{ moduleSlug }}.store'

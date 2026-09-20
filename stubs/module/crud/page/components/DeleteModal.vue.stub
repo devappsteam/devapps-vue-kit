@@ -1,0 +1,35 @@
+<script setup lang="ts">
+import { ConfirmDeleteModal } from '@devapps/vue-kit/ui'
+import { use{{ ModuleName }}Store } from '../stores/{{ moduleSlug }}.store'
+import type { {{ ModuleName }} } from '../types/{{ moduleSlug }}.types'
+
+const props = defineProps<{
+  open: boolean
+  item: {{ ModuleName }} | null
+}>()
+
+const emit = defineEmits<{
+  close: []
+  deleted: []
+}>()
+
+const store = use{{ ModuleName }}Store()
+
+async function handleConfirm() {
+  if (!props.item) return
+  await store.remove(props.item.uuid)
+  emit('deleted')
+}
+</script>
+
+<template>
+  <ConfirmDeleteModal
+    :open="open"
+    title="Delete {{ ModuleName }}"
+    description="This action cannot be undone. Please type the identifier to confirm."
+    :confirmation-label="item?.uuid ?? ''"
+    :loading="store.deleting"
+    @close="emit('close')"
+    @confirm="handleConfirm"
+  />
+</template>
