@@ -5,8 +5,10 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/** Root of the @devapps/vue-kit package (two levels up from src/cli/utils). */
-const PACKAGE_ROOT = path.resolve(__dirname, "../../..");
+/** Root of the @devapps/vue-kit package. */
+// When bundled via tsup, this file runs from `dist/cli/index.js` or `dist/cli/index.cjs`
+// So __dirname is `dist/cli` and we need to go up 2 levels.
+const PACKAGE_ROOT = path.resolve(__dirname, "../..");
 
 export interface WriteOptions {
   /** If true, overwrite existing files. Default: false. */

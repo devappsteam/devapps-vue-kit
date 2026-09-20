@@ -19,8 +19,43 @@ npm install -D typescript vue pinia
 ```
 
 ## 3. Configuração
-Configure a instância do `VueKit`, tipicamente no seu `src/main.ts` ou num arquivo dedicado de configuração:
+Você pode configurar a instância do `VueKit` de duas maneiras principais: diretamente no seu arquivo principal de inicialização ou separadamente em um arquivo dedicado.
+
+### Opção A: Diretamente no `main.ts`
+Esta é a abordagem mais simples, integrando o VueKit diretamente junto à criação da sua aplicação Vue, do Pinia e do Vue Router:
+
 ```ts
+// src/main.ts
+import './assets/app.css'
+
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import { createVueKit } from '@devappsnpm/vue-kit'
+
+import App from './App.vue'
+import router from './router'
+
+// Inicializa a configuração do VueKit
+export const vueKit = createVueKit({
+  api: {
+    baseURL: import.meta.env.VITE_API_URL,
+    auth: { driver: 'jwt' } // ou 'cookie'
+  }
+})
+
+const app = createApp(App)
+
+app.use(createPinia())
+app.use(router)
+
+app.mount('#app')
+```
+
+### Opção B: Em um arquivo dedicado
+Se você preferir manter seu `main.ts` limpo ou precisar importar a instância do VueKit em lugares onde o `main.ts` causaria dependência circular, crie um arquivo dedicado (ex: `src/plugins/vueKit.ts` ou `src/config.ts`):
+
+```ts
+// src/plugins/vueKit.ts
 import { createVueKit } from '@devappsnpm/vue-kit'
 
 export const vueKit = createVueKit({
@@ -30,6 +65,8 @@ export const vueKit = createVueKit({
   }
 })
 ```
+
+E então, você pode simplesmente importar esse arquivo no seu `main.ts` ou nos seus components/stores conforme necessário.
 
 ## 4. Autenticação
 Você pode configurar o driver de autenticação da seguinte maneira:
