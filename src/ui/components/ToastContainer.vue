@@ -1,69 +1,91 @@
 <script setup lang="ts">
-import { useToast } from '../composables/useToast'
+import { useToast } from '../composables/useToast';
 
-const { toasts, removeToast } = useToast()
+type ToastType = 'success' | 'error' | 'warning' | 'info';
 
-const iconClasses = {
-  success: 'text-green-400',
-  error: 'text-red-400',
-  warning: 'text-yellow-400',
-  info: 'text-blue-400',
-}
+const { toasts, removeToast } = useToast();
 
-const bgClasses = {
-  success: 'bg-green-50 text-green-800 border-green-200',
-  error: 'bg-red-50 text-red-800 border-red-200',
-  warning: 'bg-yellow-50 text-yellow-800 border-yellow-200',
-  info: 'bg-blue-50 text-blue-800 border-blue-200',
-}
+const iconWrapperClass: Record<ToastType, string> = {
+  success: 'bg-emerald-50 text-emerald-500',
+  error: 'bg-rose-50 text-rose-500',
+  warning: 'bg-amber-50 text-amber-500',
+  info: 'bg-sky-50 text-sky-500',
+};
 
-const icons = {
-  success: `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
-  error: `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>`,
-  warning: `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>`,
-  info: `<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>`,
-}
+const progressBarClass: Record<ToastType, string> = {
+  success: 'bg-emerald-500',
+  error: 'bg-rose-500',
+  warning: 'bg-amber-500',
+  info: 'bg-sky-500',
+};
 </script>
 
 <template>
-  <div aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6 z-[100]">
-    <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
-      <TransitionGroup
-        enter-active-class="transform ease-out duration-300 transition"
-        enter-from-class="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
-        enter-to-class="translate-y-0 opacity-100 sm:translate-x-0"
-        leave-active-class="transition ease-in duration-100"
-        leave-from-class="opacity-100"
-        leave-to-class="opacity-0"
-      >
-        <div
-          v-for="toast in toasts"
-          :key="toast.id"
-          class="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg border shadow-lg ring-1 ring-black ring-opacity-5"
-          :class="bgClasses[toast.type]"
-        >
-          <div class="p-4">
-            <div class="flex items-start">
-              <div class="flex-shrink-0" :class="iconClasses[toast.type]" v-html="icons[toast.type]"></div>
-              <div class="ml-3 w-0 flex-1 pt-0.5">
-                <p class="text-sm font-medium">{{ toast.message }}</p>
-              </div>
-              <div class="ml-4 flex flex-shrink-0">
-                <button
-                  type="button"
-                  class="inline-flex rounded-md bg-transparent text-gray-400 hover:text-gray-500 focus:outline-none"
-                  @click="removeToast(toast.id)"
-                >
-                  <span class="sr-only">Close</span>
-                  <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
+  <!-- Posicionamento do container fixado na tela -->
+  <div class="fixed top-5 right-5 z-50 flex flex-col gap-3 w-full max-w-sm pointer-events-none">
+    <TransitionGroup enter-active-class="transform ease-out duration-300 transition"
+      enter-from-class="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-4"
+      enter-to-class="translate-y-0 opacity-100 sm:translate-x-0" leave-active-class="transition ease-in duration-200"
+      leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
+      <div v-for="toast in toasts" :key="toast.id"
+        class="pointer-events-auto relative overflow-hidden flex items-start gap-3 p-4 pr-3 rounded-xl bg-white shadow-lg ring-1 ring-black/5">
+        <!-- Ícone -->
+        <div class="shrink-0 flex items-center justify-center h-9 w-9 rounded-full"
+          :class="iconWrapperClass[toast.type]">
+          <svg v-if="toast.type === 'success'" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          <svg v-else-if="toast.type === 'error'" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          <svg v-else-if="toast.type === 'warning'" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 9v3.75m0 3.75h.008v.008H12v-.008zM10.29 3.86l-8.18 14.18A1.5 1.5 0 003.5 20.5h17a1.5 1.5 0 001.39-2.46l-8.18-14.18a1.5 1.5 0 00-2.62 0z" />
+          </svg>
+          <svg v-else class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
         </div>
-      </TransitionGroup>
-    </div>
+
+        <!-- Mensagem -->
+        <p class="flex-1 text-sm font-medium text-slate-700 leading-snug pt-1.5">{{ toast.message }}</p>
+
+        <!-- Botão Fechar -->
+        <button @click="removeToast(toast.id)"
+          class="shrink-0 text-slate-400 hover:text-slate-600 p-1 rounded-lg hover:bg-slate-100 transition-colors">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <!-- Barra de progresso -->
+        <div class="absolute bottom-0 left-0 h-1 w-full bg-slate-100">
+          <div class="toast-progress h-full" :class="progressBarClass[toast.type]"
+            :style="{ animationDuration: `${toast.duration}ms` }" />
+        </div>
+      </div>
+    </TransitionGroup>
   </div>
 </template>
+
+<style scoped>
+.toast-progress {
+  animation-name: toast-shrink;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes toast-shrink {
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: 0%;
+  }
+}
+</style>
