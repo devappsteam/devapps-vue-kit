@@ -1,6 +1,6 @@
 {
   "name": "@devappsnpm/vue-kit",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "Vue 3 toolkit for Laravel API applications",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -39,7 +39,8 @@
   },
   "peerDependencies": {
     "pinia": "^3.0.0",
-    "vue": "^3.5.0"
+    "vue": "^3.5.0",
+    "@lucide/vue": "^1.39.0"
   },
   "dependencies": {
     "axios": "^1.0.0"

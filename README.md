@@ -19,54 +19,44 @@ npm install -D typescript vue pinia
 ```
 
 ## 3. Configuração
-Você pode configurar a instância do `VueKit` de duas maneiras principais: diretamente no seu arquivo principal de inicialização ou separadamente em um arquivo dedicado.
+Para configurar o VueKit, crie um arquivo de configuração (ex: `src/config.ts`) e exporte a instância inicializada.
 
-### Opção A: Diretamente no `main.ts`
-Esta é a abordagem mais simples, integrando o VueKit diretamente junto à criação da sua aplicação Vue, do Pinia e do Vue Router:
-
+**`src/config.ts`**
 ```ts
-// src/main.ts
+import { createVueKit } from '@devappsnpm/vue-kit'
+
+export const vueKit = createVueKit({
+  api: {
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+    auth: {
+      driver: 'cookie',
+      csrf: { enabled: true, endpoint: '/sanctum/csrf-cookie' },
+    },
+  },
+})
+```
+
+No seu arquivo de entrada principal (ex: `src/main.ts`), importe a configuração e registre o VueKit como um plugin utilizando o `app.use()`:
+
+**`src/main.ts`**
+```ts
 import './assets/app.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { createVueKit } from '@devappsnpm/vue-kit'
 
 import App from './App.vue'
 import router from './router'
-
-// Inicializa a configuração do VueKit
-export const vueKit = createVueKit({
-  api: {
-    baseURL: import.meta.env.VITE_API_URL,
-    auth: { driver: 'jwt' } // ou 'cookie'
-  }
-})
+import { vueKit } from './config'
 
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
+app.use(vueKit) // Registro do plugin
 
 app.mount('#app')
 ```
-
-### Opção B: Em um arquivo dedicado
-Se você preferir manter seu `main.ts` limpo ou precisar importar a instância do VueKit em lugares onde o `main.ts` causaria dependência circular, crie um arquivo dedicado (ex: `src/plugins/vueKit.ts` ou `src/config.ts`):
-
-```ts
-// src/plugins/vueKit.ts
-import { createVueKit } from '@devappsnpm/vue-kit'
-
-export const vueKit = createVueKit({
-  api: {
-    baseURL: import.meta.env.VITE_API_URL,
-    auth: { driver: 'jwt' } // ou 'cookie'
-  }
-})
-```
-
-E então, você pode simplesmente importar esse arquivo no seu `main.ts` ou nos seus components/stores conforme necessário.
 
 ## 4. Autenticação
 Você pode configurar o driver de autenticação da seguinte maneira:
